@@ -1,0 +1,24 @@
+#!/bin/bash
+
+function build_reference
+{
+  cd reference
+  zip -r ../reference.docx * > /dev/null
+  cd ..
+}
+
+function cleanup
+{
+  rm -f reference.docx
+}
+
+dest=`basename $1 .md`.docx
+
+build_reference
+
+pandoc -f markdown \
+  -t docx \
+  --data-dir=. \
+  $1 -o $dest
+
+cleanup
